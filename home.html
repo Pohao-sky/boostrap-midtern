@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>看劇網｜Bootstrap 響應式範本</title>
-    <!-- 僅使用 Bootstrap（依你本機結構）-->
+    <!-- 只使用指定的 Bootstrap 連結 -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <style>
       :root {
@@ -21,7 +21,8 @@
       .text-brand {
         color: var(--brand-primary) !important;
       }
-      /* 元件主色系調整 */
+
+      /* 主色系 */
       .btn-primary {
         background-color: var(--brand-primary);
         border-color: var(--brand-primary);
@@ -37,6 +38,8 @@
         background-color: var(--brand-primary);
         border-color: var(--brand-primary);
       }
+
+      /* 下拉選單固定深色，滑過不變淺灰 */
       .dropdown-menu {
         background-color: #111;
         color: #fff;
@@ -44,15 +47,17 @@
       .dropdown-item {
         color: #fff;
       }
-      .dropdown-item:hover {
-        background: #ffffff1a;
+      .dropdown-item:hover,
+      .dropdown-item:focus {
+        background-color: #0d0d0d;
+        color: #4fc3f7;
       }
+
       .dropdown-toggle {
         color: #fff !important;
         border-color: #4fc3f7 !important;
         transition: box-shadow 0.3s ease, color 0.3s ease;
       }
-
       .dropdown-toggle:hover,
       .dropdown-toggle:focus {
         color: #4fc3f7 !important;
@@ -60,19 +65,64 @@
         box-shadow: 0 0 10px 2px #4fc3f7;
         border-color: #4fc3f7 !important;
       }
-      .offcanvas,
+
       .modal-content {
         background-color: #121212;
         color: #fff;
       }
+
+      /* 先把卡片的預設投影拿掉，避免互相抵銷 */
+      .card.shadow-sm {
+        box-shadow: none !important;
+      }
+
+      /* 讓卡片可以擁有自己的堆疊上下文，偽元素可放在卡片下方 */
       .card {
-        background-color: #0f0f10;
-        color: #fff;
-        border: 1px solid #1f1f1f;
+        position: relative;
+        z-index: 0; /* 建立新堆疊 */
+        overflow: visible; /* 確保光暈不被裁切 */
+        transform: translateZ(0); /* 促進合成層，減少陰影鋸齒 */
       }
-      .card .text-muted {
-        color: #b8c1ce !important;
+
+      /* 霓虹藍光暈層：平時隱藏，hover/focus-within 顯示 */
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -10px; /* 擴出卡片外，避免被邊界吃光 */
+        border-radius: calc(0.5rem + 10px); /* 與卡片圓角一致並外擴 */
+        z-index: -1; /* 放在卡片後方 */
+        opacity: 0;
+        transition: opacity 0.25s ease, filter 0.25s ease;
+        /* 多層次藍光（擴散 + 遠距 halo），用透明度堆疊會更像霓虹 */
+        box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.45),
+          0 0 16px 6px rgba(79, 195, 247, 0.35),
+          0 0 42px 14px rgba(79, 195, 247, 0.25),
+          0 0 90px 30px rgba(79, 195, 247, 0.18);
+        filter: blur(0.2px); /* 微糊更柔 */
       }
+
+      /* 亮起來的時機 */
+      .card:hover::before,
+      .card:focus-within::before {
+        opacity: 1;
+      }
+
+      /* 邊框與文字也同步變藍，背景維持黑色 */
+      .card:hover,
+      .card:focus-within {
+        border-color: #4fc3f7 !important;
+        color: #4fc3f7 !important;
+        background-color: #0d0d0d !important;
+        transform: translateY(-2px) translateZ(0);
+      }
+
+      /* 可選：在卡片本體也加一點內層柔光，層次更飽滿 */
+      .card:hover,
+      .card:focus-within {
+        box-shadow: inset 0 0 0 1px rgba(79, 195, 247, 0.25),
+          0 0 8px 2px rgba(79, 195, 247, 0.25);
+      }
+
       header .carousel-caption h5,
       header .carousel-caption p {
         text-shadow: 0 2px 8px #000;
@@ -80,19 +130,20 @@
     </style>
   </head>
   <body class="bg-carbon">
-    <!-- 導覽列 Navbar -->
+    <!-- 導覽列（使用 .container-xxl 展示最大寬度容器） -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-brand sticky-top">
-      <div class="container-fluid">
+      <div class="container-xxl">
         <a class="navbar-brand fw-bold" href="#">看劇網</a>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
+          data-bs-target="#navMain"
+          title="navbar-toggler"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navMain">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active" href="#">首頁</a>
@@ -104,9 +155,8 @@
                 id="genreDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
+                >類型</a
               >
-                類型
-              </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">全部</a></li>
                 <li><a class="dropdown-item" href="#">劇情</a></li>
@@ -116,9 +166,7 @@
                 <li><a class="dropdown-item" href="#">喜劇</a></li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">我的片單</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="#">我的片單</a></li>
           </ul>
           <form class="d-flex" role="search">
             <input
@@ -133,8 +181,8 @@
       </div>
     </nav>
 
-    <!-- 主視覺／橫幅 -->
-    <header class="container mb-4">
+    <!-- 主視覺（使用 .container-sm：在小尺寸就有左右留白） -->
+    <header class="container-sm my-4">
       <div
         id="heroCarousel"
         class="carousel slide rounded overflow-hidden shadow-sm"
@@ -146,16 +194,19 @@
             data-bs-target="#heroCarousel"
             data-bs-slide-to="0"
             class="active"
+            title="button"
           ></button>
           <button
             type="button"
             data-bs-target="#heroCarousel"
             data-bs-slide-to="1"
+            title="button"
           ></button>
           <button
             type="button"
             data-bs-target="#heroCarousel"
             data-bs-slide-to="2"
+            title="button"
           ></button>
         </div>
         <div class="carousel-inner">
@@ -264,6 +315,7 @@
           type="button"
           data-bs-target="#heroCarousel"
           data-bs-slide="prev"
+          title="prev"
         >
           <span class="carousel-control-prev-icon"></span>
         </button>
@@ -272,25 +324,19 @@
           type="button"
           data-bs-target="#heroCarousel"
           data-bs-slide="next"
+          title="next"
         >
           <span class="carousel-control-next-icon"></span>
         </button>
       </div>
     </header>
 
-    <!-- 篩選／排序列 -->
-    <section class="py-3 border-bottom" style="background: #0f0f10">
-      <div class="container">
-        <div class="d-flex flex-wrap align-items-center gap-2">
-          <button
-            class="btn btn-outline-secondary d-lg-none"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#filterOffcanvas"
-          >
-            篩選條件
-          </button>
-          <div class="dropdown ms-auto ms-lg-0">
+    <!-- 功能列（不使用 Offcanvas，僅排序下拉；容器用 .container-md） -->
+    <section class="py-3 border-top border-bottom" style="background: #0f0f10">
+      <div class="container-md">
+        <div class="d-flex align-items-center">
+          <h6 class="mb-0">瀏覽與排序</h6>
+          <div class="dropdown ms-auto">
             <button
               class="btn btn-outline-secondary dropdown-toggle"
               type="button"
@@ -308,21 +354,17 @@
       </div>
     </section>
 
-    <!-- 內容卡片區 -->
+    <!-- 內容卡片（主要區塊使用 .container-md） -->
     <main class="py-4">
-      <div class="container">
+      <div class="container-md">
         <h5 id="section-latest" class="mb-3">最新上架</h5>
         <div
           class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3"
         >
-          <!-- 單一卡片：以 Bootstrap Grid 響應式排列 -->
-          <!-- 重複數張示意 -->
-          <!-- xs:2欄, md:3欄, lg:4欄, xl:5欄（以 col-6 col-md-4 col-lg-3 col-xl-2 實現） -->
-
-          <!-- 生成 12 張示意卡片 -->
-          <!-- Card 1 -->
+          <!-- 以下示意 12 張卡片（可自行複製增加） -->
+          <!-- 1 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -350,10 +392,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Card 2 -->
+          <!-- 2 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -381,10 +422,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Card 3 -->
+          <!-- 3 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -411,10 +451,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Card 4 -->
+          <!-- 4 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -441,10 +480,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Card 5 -->
+          <!-- 5 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -471,10 +509,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Card 6 -->
+          <!-- 6 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -501,10 +538,9 @@
               </div>
             </div>
           </div>
-
-          <!-- 複製以上 .col-* 卡片以擴充數量（示意 12 張） -->
+          <!-- 7 -->
           <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100">
               <div
                 class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
               >
@@ -528,7 +564,7 @@
               </div>
             </div>
           </div>
-
+          <!-- 8 -->
           <div class="col">
             <div class="card h-100 shadow-sm">
               <div
@@ -554,7 +590,7 @@
               </div>
             </div>
           </div>
-
+          <!-- 9 -->
           <div class="col">
             <div class="card h-100 shadow-sm">
               <div
@@ -580,7 +616,7 @@
               </div>
             </div>
           </div>
-
+          <!-- 10 -->
           <div class="col">
             <div class="card h-100 shadow-sm">
               <div
@@ -606,7 +642,7 @@
               </div>
             </div>
           </div>
-
+          <!-- 11 -->
           <div class="col">
             <div class="card h-100 shadow-sm">
               <div
@@ -632,7 +668,7 @@
               </div>
             </div>
           </div>
-
+          <!-- 12 -->
           <div class="col">
             <div class="card h-100 shadow-sm">
               <div
@@ -675,67 +711,12 @@
       </div>
     </main>
 
-    <!-- Offcanvas 篩選（手機／平板友善） -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="filterOffcanvasLabel">篩選條件</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="mb-3">
-          <label class="form-label">類型</label>
-          <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-outline-secondary btn-sm">全部</button>
-            <button class="btn btn-outline-secondary btn-sm">劇情</button>
-            <button class="btn btn-outline-secondary btn-sm">動作</button>
-            <button class="btn btn-outline-secondary btn-sm">愛情</button>
-            <button class="btn btn-outline-secondary btn-sm">懸疑</button>
-            <button class="btn btn-outline-secondary btn-sm">喜劇</button>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">年份</label>
-          <div class="row g-2">
-            <div class="col-6">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="起始年 2015"
-              />
-            </div>
-            <div class="col-6">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="結束年 2025"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">語言</label>
-          <select class="form-select">
-            <option selected>不限</option>
-            <option>中文</option>
-            <option>英文</option>
-            <option>日文</option>
-            <option>韓文</option>
-          </select>
-        </div>
-        <button class="btn btn-primary w-100">套用篩選</button>
-      </div>
-    </div>
-
-    <!-- 播放 Modal（示意） -->
+    <!-- 播放 Modal -->
     <div class="modal fade" id="playModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="playModalLabel">播放示意</h5>
+            <h5 class="modal-title">播放示意</h5>
             <button
               type="button"
               class="btn-close"
@@ -763,10 +744,34 @@
       </div>
     </div>
 
-    <!-- 頁尾 -->
+    <!-- 預告片 Modal（補齊 #trailerModal）-->
+    <div class="modal fade" id="trailerModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">預告片</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              title="button"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div
+              class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center rounded"
+            >
+              預告片播放器區（iframe / YouTube 嵌入）
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾（使用 .container-xxl 展示最大寬度） -->
     <footer class="border-top py-4 mt-5">
       <div
-        class="container d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2"
+        class="container-xxl d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2"
       >
         <div class="small text-muted">© 2025 看劇網. 僅作版型示意。</div>
         <ul class="nav">
@@ -783,7 +788,7 @@
       </div>
     </footer>
 
-    <!-- Bootstrap JS（無其他自訂 JS）-->
+    <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
