@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看劇網｜Bootstrap 響應式範本</title>
+    <!-- 僅使用 Bootstrap（依你本機結構）-->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <style>
+      :root {
+        --brand-primary: #4fc3f7;
+        --brand-black: #0d0d0d;
+      }
+      body.bg-carbon {
+        background-color: var(--brand-black);
+        color: #fff;
+      }
+      .bg-brand {
+        background-color: var(--brand-primary) !important;
+      }
+      .text-brand {
+        color: var(--brand-primary) !important;
+      }
+      /* 元件主色系調整 */
+      .btn-primary {
+        background-color: var(--brand-primary);
+        border-color: var(--brand-primary);
+      }
+      .btn-outline-light {
+        color: #fff;
+        border-color: #ffffff66;
+      }
+      .btn-outline-light:hover {
+        background: #ffffff1a;
+      }
+      .page-item.active .page-link {
+        background-color: var(--brand-primary);
+        border-color: var(--brand-primary);
+      }
+      .dropdown-menu {
+        background-color: #111;
+        color: #fff;
+      }
+      .dropdown-item {
+        color: #fff;
+      }
+      .dropdown-item:hover {
+        background: #ffffff1a;
+      }
+      .dropdown-toggle {
+        color: #fff !important;
+        border-color: #4fc3f7 !important;
+        transition: box-shadow 0.3s ease, color 0.3s ease;
+      }
+
+      .dropdown-toggle:hover,
+      .dropdown-toggle:focus {
+        color: #4fc3f7 !important;
+        background-color: #0d0d0d !important; /* 背景固定為黑色 */
+        box-shadow: 0 0 10px 2px #4fc3f7;
+        border-color: #4fc3f7 !important;
+      }
+      .offcanvas,
+      .modal-content {
+        background-color: #121212;
+        color: #fff;
+      }
+      .card {
+        background-color: #0f0f10;
+        color: #fff;
+        border: 1px solid #1f1f1f;
+      }
+      .card .text-muted {
+        color: #b8c1ce !important;
+      }
+      header .carousel-caption h5,
+      header .carousel-caption p {
+        text-shadow: 0 2px 8px #000;
+      }
+    </style>
+  </head>
+  <body class="bg-carbon">
+    <!-- 導覽列 Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-brand sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">看劇網</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">首頁</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="genreDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                類型
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">全部</a></li>
+                <li><a class="dropdown-item" href="#">劇情</a></li>
+                <li><a class="dropdown-item" href="#">動作</a></li>
+                <li><a class="dropdown-item" href="#">愛情</a></li>
+                <li><a class="dropdown-item" href="#">懸疑</a></li>
+                <li><a class="dropdown-item" href="#">喜劇</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">我的片單</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="搜尋劇名 / 演員"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-light" type="submit">搜尋</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主視覺／橫幅 -->
+    <header class="container mb-4">
+      <div
+        id="heroCarousel"
+        class="carousel slide rounded overflow-hidden shadow-sm"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide-to="0"
+            class="active"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide-to="1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide-to="2"
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <svg
+              class="bd-placeholder-img d-block w-100"
+              width="1200"
+              height="420"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <rect width="100%" height="100%" fill="#ced4da"></rect>
+              <text
+                x="50%"
+                y="50%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                font-size="36"
+              >
+                精選影集 A｜懸疑 / 2025
+              </text>
+            </svg>
+            <div class="carousel-caption text-start">
+              <h5 class="fw-bold">精選影集 A</h5>
+              <p>反轉不斷、心跳加速的懸疑大作。</p>
+              <button
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#trailerModal"
+                data-title="精選影集 A 預告片"
+              >
+                觀看預告
+              </button>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <svg
+              class="bd-placeholder-img d-block w-100"
+              width="1200"
+              height="420"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <rect width="100%" height="100%" fill="#dee2e6"></rect>
+              <text
+                x="50%"
+                y="50%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                font-size="36"
+              >
+                人氣喜劇 B｜喜劇 / 2024
+              </text>
+            </svg>
+            <div class="carousel-caption">
+              <h5 class="fw-bold">人氣喜劇 B</h5>
+              <p>輕鬆消遣，笑聲不間斷。</p>
+              <button
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#trailerModal"
+                data-title="人氣喜劇 B 預告片"
+              >
+                觀看預告
+              </button>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <svg
+              class="bd-placeholder-img d-block w-100"
+              width="1200"
+              height="420"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <rect width="100%" height="100%" fill="#e9ecef"></rect>
+              <text
+                x="50%"
+                y="50%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                font-size="36"
+              >
+                犯罪劇 C｜犯罪 / 2023
+              </text>
+            </svg>
+            <div class="carousel-caption text-end">
+              <h5 class="fw-bold">犯罪劇 C</h5>
+              <p>抽絲剝繭，一探真相。</p>
+              <button
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#trailerModal"
+                data-title="犯罪劇 C 預告片"
+              >
+                觀看預告
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#heroCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#heroCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 篩選／排序列 -->
+    <section class="py-3 border-bottom" style="background: #0f0f10">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <button
+            class="btn btn-outline-secondary d-lg-none"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+          >
+            篩選條件
+          </button>
+          <div class="dropdown ms-auto ms-lg-0">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              排序方式
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">最新上架</a></li>
+              <li><a class="dropdown-item" href="#">評分最高</a></li>
+              <li><a class="dropdown-item" href="#">最多觀看</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 內容卡片區 -->
+    <main class="py-4">
+      <div class="container">
+        <h5 id="section-latest" class="mb-3">最新上架</h5>
+        <div
+          class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3"
+        >
+          <!-- 單一卡片：以 Bootstrap Grid 響應式排列 -->
+          <!-- 重複數張示意 -->
+          <!-- xs:2欄, md:3欄, lg:4欄, xl:5欄（以 col-6 col-md-4 col-lg-3 col-xl-2 實現） -->
+
+          <!-- 生成 12 張示意卡片 -->
+          <!-- Card 1 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="黎明之城">
+                  黎明之城
+                </h6>
+                <div class="mb-2 small text-muted">第 1 季</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-danger">新集數</span>
+                  <span class="badge text-bg-secondary">HD</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="深海迷蹤">
+                  深海迷蹤
+                </h6>
+                <div class="mb-2 small text-muted">第 2 季</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-warning">高分</span>
+                  <span class="badge text-bg-secondary">4K</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="城市偵探">
+                  城市偵探
+                </h6>
+                <div class="mb-2 small text-muted">第 3 季</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-info">更新中</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="在你左右">
+                  在你左右
+                </h6>
+                <div class="mb-2 small text-muted">短篇集</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-secondary">HD</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="北境風雪">
+                  北境風雪
+                </h6>
+                <div class="mb-2 small text-muted">第 1 季</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-danger">新集數</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="夢境之門">
+                  夢境之門
+                </h6>
+                <div class="mb-2 small text-muted">第 5 季</div>
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge text-bg-secondary">HD</span>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 複製以上 .col-* 卡片以擴充數量（示意 12 張） -->
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="黑夜追緝">
+                  黑夜追緝
+                </h6>
+                <div class="mb-2 small text-muted">第 2 季</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="白晝之河">
+                  白晝之河
+                </h6>
+                <div class="mb-2 small text-muted">第 1 季</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="霧林密語">
+                  霧林密語
+                </h6>
+                <div class="mb-2 small text-muted">第 4 季</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="群星之下">
+                  群星之下
+                </h6>
+                <div class="mb-2 small text-muted">第 7 季</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="遺落之站">
+                  遺落之站
+                </h6>
+                <div class="mb-2 small text-muted">迷你影集</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div
+                class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center"
+              >
+                封面
+              </div>
+              <div class="card-body">
+                <h6 class="card-title mb-1 text-truncate" title="潮汐之聲">
+                  潮汐之聲
+                </h6>
+                <div class="mb-2 small text-muted">第 6 季</div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#playModal"
+                >
+                  播放
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                  加入片單
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分頁 -->
+        <nav class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link">上一頁</a></li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+          </ul>
+        </nav>
+      </div>
+    </main>
+
+    <!-- Offcanvas 篩選（手機／平板友善） -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filterOffcanvasLabel">篩選條件</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mb-3">
+          <label class="form-label">類型</label>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-secondary btn-sm">全部</button>
+            <button class="btn btn-outline-secondary btn-sm">劇情</button>
+            <button class="btn btn-outline-secondary btn-sm">動作</button>
+            <button class="btn btn-outline-secondary btn-sm">愛情</button>
+            <button class="btn btn-outline-secondary btn-sm">懸疑</button>
+            <button class="btn btn-outline-secondary btn-sm">喜劇</button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">年份</label>
+          <div class="row g-2">
+            <div class="col-6">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="起始年 2015"
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="結束年 2025"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">語言</label>
+          <select class="form-select">
+            <option selected>不限</option>
+            <option>中文</option>
+            <option>英文</option>
+            <option>日文</option>
+            <option>韓文</option>
+          </select>
+        </div>
+        <button class="btn btn-primary w-100">套用篩選</button>
+      </div>
+    </div>
+
+    <!-- 播放 Modal（示意） -->
+    <div class="modal fade" id="playModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="playModalLabel">播放示意</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div
+              class="ratio ratio-16x9 bg-dark text-white d-flex align-items-center justify-content-center rounded"
+            >
+              這裡可嵌入播放器（例如 <code>video</code> 或 iframe）
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              關閉
+            </button>
+            <button type="button" class="btn btn-primary">開始播放</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="border-top py-4 mt-5">
+      <div
+        class="container d-flex flex-column flex-lg-row align-items-center justify-content-between gap-2"
+      >
+        <div class="small text-muted">© 2025 看劇網. 僅作版型示意。</div>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link px-2" href="#">服務條款</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2" href="#">隱私權政策</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2" href="#">聯絡我們</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS（無其他自訂 JS）-->
+    <script src="js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
