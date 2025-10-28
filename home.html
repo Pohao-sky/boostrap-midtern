@@ -79,6 +79,7 @@
       /* 讓卡片可以擁有自己的堆疊上下文，偽元素可放在卡片下方 */
       .card {
         position: relative;
+        background-color: #0d0d0d !important;
         z-index: 0; /* 建立新堆疊 */
         overflow: visible; /* 確保光暈不被裁切 */
         transform: translateZ(0); /* 促進合成層，減少陰影鋸齒 */
@@ -721,6 +722,7 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
+              title="button"
             ></button>
           </div>
           <div class="modal-body">
